@@ -1,2 +1,2 @@
 # simple_shell
-A simple shell program
+A simple shell program written in c
