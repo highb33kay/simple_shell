@@ -13,6 +13,8 @@
  */
 char *get_path(char *token)
 {
+	char *path_token;
+
 	char *original_path = getenv("PATH");
 
 	char *path = (char *)malloc(strlen(original_path) + 1);
@@ -25,8 +27,7 @@ char *get_path(char *token)
 
 	strcpy(path, original_path);
 
-	char *path_token = strtok(path, ":");
-	printf("path_tokened is this: %s\n", path_token);
+	path_token = strtok(path, ":");
 
 	while (path_token != NULL)
 	{
@@ -38,7 +39,7 @@ char *get_path(char *token)
 			exit(EXIT_FAILURE);
 		}
 
-		strcpy(full_path, path_token);
+		strcpy(full_path, "/usr/bin");
 		strcat(full_path, "/");
 		strcat(full_path, token);
 
