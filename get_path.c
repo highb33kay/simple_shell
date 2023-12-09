@@ -17,8 +17,6 @@ char *get_path(char *token)
 
 	char *path = strdup(original_path);
 
-	printf(" this is the path: %s\n", path);
-
 	if (path == NULL)
 	{
 		perror("Failed to allocate memory");
@@ -39,11 +37,10 @@ char *get_path(char *token)
 
 		sprintf(full_path, "%s/%s", path_token, token);
 
-		printf("full_path: %s\n", full_path);
-
 		if (access(full_path, X_OK) == 0)
 		{
 			free(path);
+			printf("full_path: %s\n", full_path);
 			return (full_path);
 		}
 
