@@ -16,6 +16,11 @@ int execute_command(char **tokens)
 {
 	pid_t child_pid;
 	char *path = NULL;
+	char *token_dup = "";
+
+	char *tokens_dup = malloc(sizeof(char *) * 1024);
+
+	path = get_path(tokens[0]);
 
 	child_pid = fork();
 
@@ -25,20 +30,21 @@ int execute_command(char **tokens)
 		exit(EXIT_FAILURE);
 	}
 
-	printf("tokens[0]: %s\n", tokens[0]);
-
-	path = get_path(tokens[0]);
-	printf("path: %s\n", path);
-
 	if (child_pid == 0)
 	{
 
-		printf("Child %d executing command: %s\n", getpid(), tokens[0]);
-
 		tokens[0] = path;
 
-		execve(path, tokens, NULL);
+		printf("Child %d executing command: %s\n", getpid(), tokens[0]);
 
+		// char *argv[] = {"/bin/pwd", "-l", "/usr/", NULL};
+
+		// char *argv[] = {"/bin/ls", "/bin", NULL};
+
+		if (execve(tokens[0], tokens, NULL) == -1)
+		{
+			printf("Error: execve failed agin and again\n");
+		}
 		fprintf(stderr, "Error: execve failed\n");
 		perror(tokens[0]);
 		exit(EXIT_FAILURE);
@@ -55,7 +61,7 @@ int execute_command(char **tokens)
 		else
 			printf("Child %d terminated abnormally\n", child_pid);
 
-		free(path);
+		// free(path);
 	}
 
 	return (-1);

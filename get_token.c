@@ -1,34 +1,45 @@
 #include "shell.h"
 #include <stdio.h>
 #include <string.h>
+
+#define TOK_DELIM " \t\r\n\a"
 /**
  * tokenize_command - Tokenize command
- * @command: Pointer to the command entered by the user
- * @delim: Delimiter
+ * @line: Pointer to the command entered by the user
  * Return: Pointer to the array of tokens
  */
-char **tokenize_command(char *command, char *delim)
+char **tokenize_command(char *line)
 {
-	char **tokens = NULL;
-	char *token = NULL;
-	int i = 0;
+	int bufsize = 64;
+	int position = 0;
+	char **tokens = malloc(bufsize * sizeof(char *));
+	char *token;
 
-	tokens = malloc(sizeof(char *) * 1024);
-	if (tokens == NULL)
+	if (!tokens)
 	{
-		perror("Failed to allocate memory");
+		perror("Allocation error");
 		exit(EXIT_FAILURE);
 	}
 
-	token = strtok(command, delim);
+	token = strtok(line, TOK_DELIM);
 	while (token != NULL)
 	{
-		tokens[i] = token;
-		token = strtok(NULL, delim);
-		i++;
+		tokens[position] = token;
+		position++;
+
+		if (position >= bufsize)
+		{
+			bufsize += 64;
+			tokens = realloc(tokens, bufsize * sizeof(char *));
+			if (!tokens)
+			{
+				perror("Allocation error");
+				exit(EXIT_FAILURE);
+			}
+		}
+
+		token = strtok(NULL, TOK_DELIM);
 	}
-
-	tokens[i] = NULL;
-
+	tokens[position] = NULL;
 	return (tokens);
 }

@@ -6,9 +6,9 @@
 
 /* Function prototypes */
 /* get command from the user*/
-char get_command(char **command);
+char *get_command(void);
 /* tokenize command */
-char **tokenize_command(char *command, char *delim);
+char **tokenize_command(char *line);
 /* execute command */
 int execute_command(char **tokens);
 /* get path of the token */

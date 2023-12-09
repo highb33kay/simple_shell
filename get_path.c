@@ -1,58 +1,71 @@
-#define _POSIX_C_SOURCE 200809L
-
 #include "shell.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 
-/**
- * get_path - Get path of the token
- * @token: Pointer to the token
- * Return: Pointer to the path
- */
+#define MAX_PATH_LENGTH 1024
+
 char *get_path(char *token)
 {
-	char *path_token;
+	char *path = NULL;
+	char *path_env = getenv("PATH");
 
-	char *original_path = getenv("PATH");
-
-	char *path = (char *)malloc(strlen(original_path) + 1);
-
-	if (path == NULL)
+	if (path_env == NULL)
 	{
-		perror("Failed to allocate memory");
+		fprintf(stderr, "Error: $PATH environment variable not found\n");
 		exit(EXIT_FAILURE);
 	}
 
-	strcpy(path, original_path);
-
-	path_token = strtok(path, ":");
-
-	while (path_token != NULL)
+	char *path_env_copy = strdup(path_env);
+	if (path_env_copy == NULL)
 	{
-		char *full_path = (char *)malloc(strlen(path_token) + strlen(token) + 2);
-
-		if (full_path == NULL)
-		{
-			perror("Failed to allocate memory");
-			exit(EXIT_FAILURE);
-		}
-
-		strcpy(full_path, "/usr/bin");
-		strcat(full_path, "/");
-		strcat(full_path, token);
-
-		printf("full_path: %s\n", full_path);
-
-		free(path);
-		printf("here is the full_path: %s\n", full_path);
-		return (full_path);
-
-		free(full_path);
-		path_token = strtok(NULL, ":");
+		perror("strdup failed");
+		exit(EXIT_FAILURE);
 	}
 
-	free(path);
-	return (NULL);
+	char *dir = strtok(path_env_copy, ":");
+
+	printf("Searching for %s in %s\n", token, dir);
+
+	char fullPath[MAX_PATH_LENGTH];
+
+	while (dir != NULL)
+	{
+		if (strcmp(dir, token) == 0)
+		{
+			// If dir and token are the same, set fullPath to dir
+			snprintf(fullPath, sizeof(fullPath), "%s", dir);
+		}
+		else
+		{
+			// Otherwise, construct the full path as usual
+			snprintf(fullPath, sizeof(fullPath), "%s/%s", dir, token);
+		}
+
+		// Check if the command exists at the current path
+		if (access(fullPath, F_OK) == 0)
+		{
+			// Allocate memory for the full path and copy the result
+			char *resultPath = malloc(strlen(fullPath) + 1);
+			if (resultPath == NULL)
+			{
+				perror("malloc");
+				exit(EXIT_FAILURE);
+			}
+			strcpy(resultPath, fullPath);
+
+			// Free the memory used for the path copy
+			free(path_env_copy);
+
+			return resultPath;
+		}
+
+		// Get the next directory in the PATH
+		dir = strtok(NULL, ":");
+	}
+
+	free(path_env_copy);
+
+	return (path);
 }
