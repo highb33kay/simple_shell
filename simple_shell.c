@@ -26,6 +26,8 @@ int main(void)
 			i++;
 		}
 
+		execute_command(tokens);
+
 		// Free allocated memory for tokens
 		for (i = 0; tokens[i] != NULL; i++)
 			free(tokens[i]);

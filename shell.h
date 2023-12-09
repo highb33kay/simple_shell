@@ -9,4 +9,9 @@
 char get_command(char **command);
 /* tokenize command */
 char **tokenize_command(char *command, char *delim);
+/* execute command */
+int execute_command(char **tokens);
+/* get path of the token */
+char *get_path(char *token);
+
 #endif
