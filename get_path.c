@@ -44,12 +44,9 @@ char *get_path(char *token)
 
 		printf("full_path: %s\n", full_path);
 
-		if (access(full_path, X_OK) == 0)
-		{
-			free(path);
-			printf("here is the full_path: %s\n", full_path);
-			return (full_path);
-		}
+		free(path);
+		printf("here is the full_path: %s\n", full_path);
+		return (full_path);
 
 		free(full_path);
 		path_token = strtok(NULL, ":");
