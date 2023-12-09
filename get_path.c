@@ -1,4 +1,4 @@
-// get_path.c
+#define _POSIX_C_SOURCE 200809L
 
 #include "shell.h"
 #include <stdio.h>
@@ -15,9 +15,9 @@ char *get_path(char *token)
 {
 	char *original_path = getenv("PATH");
 
-	printf("original_path: %s\n", original_path);
+	char *path = strdup(original_path);
 
-	char *path = (char *)malloc(strlen(original_path) + 1);
+	printf(" this is the path: %s\n", path);
 
 	if (path == NULL)
 	{
@@ -25,18 +25,11 @@ char *get_path(char *token)
 		exit(EXIT_FAILURE);
 	}
 
-	strcpy(path, original_path);
-
 	char *path_token = strtok(path, ":");
-
-	printf("path_token: %s\n", path_token);
-
-	// find the full path of the token
 
 	while (path_token != NULL)
 	{
-		char *full_path = malloc(strlen(path_token) + strlen(token) + 2);
-		printf("full_path: %s\n", full_path);
+		char *full_path = (char *)malloc(strlen(path_token) + strlen(token) + 2);
 
 		if (full_path == NULL)
 		{
@@ -46,14 +39,18 @@ char *get_path(char *token)
 
 		sprintf(full_path, "%s/%s", path_token, token);
 
-		free(path);
 		printf("full_path: %s\n", full_path);
-		return (full_path);
+
+		if (access(full_path, X_OK) == 0)
+		{
+			free(path);
+			return full_path;
+		}
 
 		free(full_path);
 		path_token = strtok(NULL, ":");
 	}
 
 	free(path);
-	return (NULL);
+	return NULL;
 }
