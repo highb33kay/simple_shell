@@ -35,7 +35,9 @@ int execute_command(char **tokens)
 
 		printf("Child %d executing command: %s\n", getpid(), tokens[0]);
 
-		execvp(path, tokens);
+		tokens[0] = path;
+
+		execve(path, tokens, NULL);
 
 		fprintf(stderr, "Error: execve failed\n");
 		perror(tokens[0]);
