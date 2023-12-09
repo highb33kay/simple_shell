@@ -26,6 +26,7 @@ char *get_path(char *token)
 	strcpy(path, original_path);
 
 	char *path_token = strtok(path, ":");
+	printf("path_tokened is this: %s\n", path_token);
 
 	while (path_token != NULL)
 	{
@@ -46,6 +47,7 @@ char *get_path(char *token)
 		if (access(full_path, X_OK) == 0)
 		{
 			free(path);
+			printf("here is the full_path: %s\n", full_path);
 			return (full_path);
 		}
 
