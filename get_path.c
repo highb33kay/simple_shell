@@ -44,7 +44,7 @@ char *get_path(char *token)
 		if (access(full_path, X_OK) == 0)
 		{
 			free(path);
-			return full_path;
+			return (full_path);
 		}
 
 		free(full_path);
@@ -52,5 +52,5 @@ char *get_path(char *token)
 	}
 
 	free(path);
-	return NULL;
+	return (NULL);
 }
