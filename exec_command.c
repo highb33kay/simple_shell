@@ -26,6 +26,7 @@ int execute_command(char **tokens)
 	}
 
 	path = get_path(tokens[0]);
+	printf("path: %s\n", path);
 
 	if (child_pid == 0)
 	{
@@ -49,9 +50,9 @@ int execute_command(char **tokens)
 			printf("Child %d terminated normally with exit status=%d\n", child_pid, WEXITSTATUS(status));
 		else
 			printf("Child %d terminated abnormally\n", child_pid);
-	}
 
-	free(path);
+		free(path);
+	}
 
 	return (-1);
 }

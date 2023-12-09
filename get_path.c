@@ -15,13 +15,15 @@ char *get_path(char *token)
 {
 	char *original_path = getenv("PATH");
 
-	char *path = strdup(original_path);
+	char *path = (char *)malloc(strlen(original_path) + 1);
 
 	if (path == NULL)
 	{
 		perror("Failed to allocate memory");
 		exit(EXIT_FAILURE);
 	}
+
+	strcpy(path, original_path);
 
 	char *path_token = strtok(path, ":");
 
@@ -35,12 +37,15 @@ char *get_path(char *token)
 			exit(EXIT_FAILURE);
 		}
 
-		sprintf(full_path, "%s/%s", path_token, token);
+		strcpy(full_path, path_token);
+		strcat(full_path, "/");
+		strcat(full_path, token);
+
+		printf("full_path: %s\n", full_path);
 
 		if (access(full_path, X_OK) == 0)
 		{
 			free(path);
-			printf("full_path: %s\n", full_path);
 			return (full_path);
 		}
 
