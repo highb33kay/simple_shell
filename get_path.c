@@ -8,10 +8,6 @@
 
 char *get_path(char *token)
 {
-	char *path = NULL;
-	char *path_env_copy;
-	char *dir;
-	char fullPath[MAX_PATH_LENGTH];
 	char *path_env = getenv("PATH");
 
 	if (path_env == NULL)
@@ -20,22 +16,23 @@ char *get_path(char *token)
 		exit(EXIT_FAILURE);
 	}
 
-	path_env_copy = strdup(path_env);
+	char *path_env_copy = strdup(path_env);
+
 	if (path_env_copy == NULL)
 	{
 		perror("strdup failed");
 		exit(EXIT_FAILURE);
 	}
 
-	dir = strtok(path_env_copy, ":");
-
-	printf("Searching for %s in %s\n", token, dir);
+	char *dir = strtok(path_env_copy, ":");
 
 	while (dir != NULL)
 	{
-		if (strcmp(dir, token) == 0)
+		char fullPath[MAX_PATH_LENGTH];
+
+		if (strncmp(token, "/bin/", 5) == 0)
 		{
-			snprintf(fullPath, sizeof(fullPath), "%s", dir);
+			snprintf(fullPath, sizeof(fullPath), "%s", token);
 		}
 		else
 		{
@@ -44,16 +41,15 @@ char *get_path(char *token)
 
 		if (access(fullPath, F_OK) == 0)
 		{
-			char *resultPath = malloc(strlen(fullPath) + 1);
+			char *resultPath = strdup(fullPath);
+
 			if (resultPath == NULL)
 			{
-				perror("malloc");
+				perror("strdup failed");
 				exit(EXIT_FAILURE);
 			}
-			strcpy(resultPath, fullPath);
 
 			free(path_env_copy);
-
 			return resultPath;
 		}
 
@@ -62,5 +58,5 @@ char *get_path(char *token)
 
 	free(path_env_copy);
 
-	return (path);
+	return NULL;
 }

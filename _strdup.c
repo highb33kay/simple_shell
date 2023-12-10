@@ -2,11 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 /**
- * my_strdup - Entry point
+ * _strdup - Entry point
  * @str: string to duplicate
  * Return: pointer to the duplicated string
  */
-char *my_strdup(const char *str)
+char *_strdup(const char *str)
 {
 	int str_size;
 	static char *dup;

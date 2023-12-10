@@ -14,14 +14,15 @@ int main(void)
 
 	while (1)
 	{
+		printf("Hello User 😃 \n");
 		line = get_command();
 
 		tokens = tokenize_command(line);
 
-		while (tokens[i] != NULL)
+		if (strcmp(tokens[0], "exit") == 0)
 		{
-			printf("Token %d: %s\n", i, tokens[i]);
-			i++;
+			printf("Goodbye! 😢\n");
+			exit(EXIT_SUCCESS);
 		}
 
 		execute_command(tokens);

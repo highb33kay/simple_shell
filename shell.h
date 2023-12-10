@@ -13,5 +13,12 @@ char **tokenize_command(char *line);
 int execute_command(char **tokens);
 /* get path of the token */
 char *get_path(char *token);
+/**
+ * _strdup - Duplicate a string.
+ * @str: The string to duplicate.
+ *
+ * Return: A pointer to the duplicated string, or NULL.
+ */
+char *_strdup(const char *str);
 
 #endif
