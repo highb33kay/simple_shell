@@ -1,6 +1,5 @@
 #include "shell.h"
-#include <stdio.h>
-#include <string.h>
+
 /**
  * main - Entry point
  *

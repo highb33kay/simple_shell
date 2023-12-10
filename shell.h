@@ -9,6 +9,8 @@
 
 #define MAX_PATH_LENGTH 1024
 #define TOK_DELIM " \t\r\n\a"
+#define _POSIX_C_SOURCE 200809L
+#define MAX_INPUT_SIZE 1024
 
 /* Function prototypes */
 /* get command from the user*/
