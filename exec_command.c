@@ -16,9 +16,6 @@ int execute_command(char **tokens)
 {
 	pid_t child_pid;
 	char *path = NULL;
-	char *token_dup = "";
-
-	char *tokens_dup = malloc(sizeof(char *) * 1024);
 
 	path = get_path(tokens[0]);
 
@@ -36,10 +33,6 @@ int execute_command(char **tokens)
 		tokens[0] = path;
 
 		printf("Child %d executing command: %s\n", getpid(), tokens[0]);
-
-		// char *argv[] = {"/bin/pwd", "-l", "/usr/", NULL};
-
-		// char *argv[] = {"/bin/ls", "/bin", NULL};
 
 		if (execve(tokens[0], tokens, NULL) == -1)
 		{
@@ -60,8 +53,6 @@ int execute_command(char **tokens)
 			printf("Child %d terminated normally with exit status=%d\n", child_pid, WEXITSTATUS(status));
 		else
 			printf("Child %d terminated abnormally\n", child_pid);
-
-		// free(path);
 	}
 
 	return (-1);

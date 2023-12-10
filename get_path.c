@@ -9,6 +9,9 @@
 char *get_path(char *token)
 {
 	char *path = NULL;
+	char *path_env_copy;
+	char *dir;
+	char fullPath[MAX_PATH_LENGTH];
 	char *path_env = getenv("PATH");
 
 	if (path_env == NULL)
@@ -17,36 +20,30 @@ char *get_path(char *token)
 		exit(EXIT_FAILURE);
 	}
 
-	char *path_env_copy = strdup(path_env);
+	path_env_copy = strdup(path_env);
 	if (path_env_copy == NULL)
 	{
 		perror("strdup failed");
 		exit(EXIT_FAILURE);
 	}
 
-	char *dir = strtok(path_env_copy, ":");
+	dir = strtok(path_env_copy, ":");
 
 	printf("Searching for %s in %s\n", token, dir);
-
-	char fullPath[MAX_PATH_LENGTH];
 
 	while (dir != NULL)
 	{
 		if (strcmp(dir, token) == 0)
 		{
-			// If dir and token are the same, set fullPath to dir
 			snprintf(fullPath, sizeof(fullPath), "%s", dir);
 		}
 		else
 		{
-			// Otherwise, construct the full path as usual
 			snprintf(fullPath, sizeof(fullPath), "%s/%s", dir, token);
 		}
 
-		// Check if the command exists at the current path
 		if (access(fullPath, F_OK) == 0)
 		{
-			// Allocate memory for the full path and copy the result
 			char *resultPath = malloc(strlen(fullPath) + 1);
 			if (resultPath == NULL)
 			{
@@ -55,13 +52,11 @@ char *get_path(char *token)
 			}
 			strcpy(resultPath, fullPath);
 
-			// Free the memory used for the path copy
 			free(path_env_copy);
 
 			return resultPath;
 		}
 
-		// Get the next directory in the PATH
 		dir = strtok(NULL, ":");
 	}
 
