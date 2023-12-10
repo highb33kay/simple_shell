@@ -3,6 +3,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <sys/types.h>
+#include <string.h>
+#include <sys/wait.h>
+
+#define MAX_PATH_LENGTH 1024
+#define TOK_DELIM " \t\r\n\a"
 
 /* Function prototypes */
 /* get command from the user*/
@@ -13,12 +19,13 @@ char **tokenize_command(char *line);
 int execute_command(char **tokens);
 /* get path of the token */
 char *get_path(char *token);
-/**
- * _strdup - Duplicate a string.
- * @str: The string to duplicate.
- *
- * Return: A pointer to the duplicated string, or NULL.
- */
+
 char *_strdup(const char *str);
 
+void execute_child(char *path, char **tokens);
+void wait_and_print_status(pid_t child_pid);
+void print_tokens(char **tokens);
+char *get_path_env();
+char *construct_full_path(const char *dir, const char *token);
+int _file_exists(const char *file_path);
 #endif

@@ -2,23 +2,22 @@
 #include <stdlib.h>
 #include <string.h>
 /**
- * _strdup - Entry point
- * @str: string to duplicate
- * Return: pointer to the duplicated string
+ * _strdup - Duplicate a string.
+ * @str: The string to duplicate.
+ *
+ * Return: A pointer to the duplicated string, or NULL.
  */
 char *_strdup(const char *str)
 {
 	int str_size;
-	static char *dup;
+	char *dup;
 	char *dup_offset;
 
-	/* Allocate memory for duplicate */
 	str_size = strlen(str);
-	dup = (char *)malloc(sizeof(char) * str_size + 1);
+	dup = (char *)malloc(sizeof(char) * (str_size + 1));
 	if (dup == NULL)
-		return ((char *)NULL);
+		return (NULL);
 
-	/* Copy string */
 	dup_offset = dup;
 	while (*str)
 	{

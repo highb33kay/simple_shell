@@ -10,7 +10,6 @@ int main(void)
 {
 	char *line;
 	char **tokens = NULL;
-	int i = 0;
 
 	while (1)
 	{

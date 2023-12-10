@@ -7,7 +7,6 @@
 #define MAX_INPUT_SIZE 1024
 /**
  * get_command - Get command from the user
- * @command: Pointer to the command entered by the user
  *
  * Return: Nothing
  */
