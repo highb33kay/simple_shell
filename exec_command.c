@@ -16,43 +16,57 @@ int execute_command(char **tokens)
 {
 	pid_t child_pid;
 	char *path = NULL;
+	char *error_message;
 
 	path = get_path(tokens[0]);
 
-	child_pid = fork();
-
-	if (child_pid == -1)
+	if (path == NULL)
 	{
-		perror("fork error");
-		exit(EXIT_FAILURE);
-	}
-
-	if (child_pid == 0)
-	{
-
-		tokens[0] = path;
-
-		printf("Child %d executing command: %s\n", getpid(), tokens[0]);
-
-		if (execve(tokens[0], tokens, NULL) == -1)
-		{
-			printf("Error: execve failed agin and again\n");
-		}
-		fprintf(stderr, "Error: execve failed\n");
-		perror(tokens[0]);
-		exit(EXIT_FAILURE);
+		write(STDOUT_FILENO, *tokens, strlen(*tokens));
+		write(STDOUT_FILENO, "\n", 1);
+		return (-1);
 	}
 	else
 	{
+		child_pid = fork();
 
-		int status;
+		if (child_pid == -1)
+		{
+			perror("fork error");
+			exit(EXIT_FAILURE);
+		}
 
-		waitpid(child_pid, &status, 0);
+		if (child_pid == 0)
+		{
 
-		if (WIFEXITED(status))
-			printf("Child %d terminated normally with exit status=%d\n", child_pid, WEXITSTATUS(status));
+			tokens[0] = path;
+
+			error_message = _strdup("😒😭: Could not execute command\n ");
+
+			if (execve(tokens[0], tokens, NULL) == -1)
+			{
+
+				// Print the command if execve fails
+				write(STDERR_FILENO, error_message, strlen(error_message));
+				free(error_message);
+				_exit(EXIT_FAILURE);
+			}
+			fprintf(stderr, "Error: execve failed\n");
+			perror(tokens[0]);
+			exit(EXIT_FAILURE);
+		}
 		else
-			printf("Child %d terminated abnormally\n", child_pid);
+		{
+
+			int status;
+
+			waitpid(child_pid, &status, 0);
+
+			if (WIFEXITED(status))
+				printf("Child %d terminated normally with exit status=%d\n", child_pid, WEXITSTATUS(status));
+			else
+				printf("Child %d terminated abnormally\n", child_pid);
+		}
 	}
 
 	return (-1);
