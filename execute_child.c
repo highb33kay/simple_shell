@@ -19,7 +19,7 @@ void execute_child(char *path, char **tokens)
 		free(error_message);
 		_exit(EXIT_FAILURE);
 	}
-	fprintf(stderr, "Error: execve failed\n");
+	write(STDERR_FILENO, error_message, strlen(error_message));
 	perror(tokens[0]);
 	exit(EXIT_FAILURE);
 }

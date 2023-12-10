@@ -12,7 +12,7 @@ void wait_and_print_status(pid_t child_pid)
 	waitpid(child_pid, &status, 0);
 
 	if (WIFEXITED(status))
-		printf("Child %d with exit status=%d\n", child_pid, WEXITSTATUS(status));
+		write(STDOUT_FILENO, "😊: Child process terminated normally\n", 41);
 	else
-		printf("Child %d terminated abnormally\n", child_pid);
+		write(STDOUT_FILENO, "😭: Child process terminated abnormally\n", 43);
 }

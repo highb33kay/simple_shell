@@ -10,7 +10,7 @@ char *get_path_env()
 
 	if (path_env == NULL)
 	{
-		fprintf(stderr, "Error: $PATH environment variable not found\n");
+		write(STDERR_FILENO, "Error: $PATH environment variable not found\n", 44);
 		exit(EXIT_FAILURE);
 	}
 
