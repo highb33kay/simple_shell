@@ -10,8 +10,6 @@ int main(void)
 	char *line;
 	char **tokens = NULL;
 
-	write(STDOUT_FILENO, "Welcome User\n", 14);
-
 	while (1)
 	{
 
@@ -21,7 +19,6 @@ int main(void)
 
 		if (strcmp(tokens[0], "exit") == 0)
 		{
-			write(STDOUT_FILENO, "😘", 5);
 			exit(EXIT_SUCCESS);
 		}
 

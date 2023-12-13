@@ -12,7 +12,7 @@ void execute_child(char *path, char **tokens)
 
 	tokens[0] = path;
 
-	error_message = _strdup("😒😭: Could not execute command\n ");
+	error_message = _strdup("./shell: No such file or directory\n ");
 	if (execve(tokens[0], tokens, NULL) == -1)
 	{
 		write(STDERR_FILENO, error_message, strlen(error_message));

@@ -10,7 +10,7 @@ char *get_path_env()
 
 	if (path_env == NULL)
 	{
-		write(STDERR_FILENO, "Error: $PATH environment variable not found\n", 44);
+		write(STDERR_FILENO, "./shell: No such file or directory\n", 36);
 		exit(EXIT_FAILURE);
 	}
 

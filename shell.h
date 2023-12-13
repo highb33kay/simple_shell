@@ -25,7 +25,7 @@ char *get_path(char *token);
 char *_strdup(const char *str);
 
 void execute_child(char *path, char **tokens);
-void wait_and_print_status(pid_t child_pid);
+int wait_and_print_status(pid_t child_pid);
 void print_tokens(char **tokens);
 char *get_path_env();
 char *construct_full_path(const char *dir, const char *token);
