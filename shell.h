@@ -30,4 +30,5 @@ void print_tokens(char **tokens);
 char *get_path_env();
 char *construct_full_path(const char *dir, const char *token);
 int _file_exists(const char *file_path);
+int _str_cmp(char *s1, char *s2);
 #endif

@@ -17,7 +17,7 @@ int main(void)
 
 		tokens = tokenize_command(line);
 
-		if (strcmp(tokens[0], "exit") == 0)
+		if (_str_cmp(tokens[0], "exit") == 0)
 		{
 			exit(EXIT_SUCCESS);
 		}
